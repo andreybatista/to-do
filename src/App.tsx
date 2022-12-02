@@ -1,5 +1,6 @@
-import { ChangeEvent, FormEvent, useState } from 'react'
-import { PlusCircle, ClipboardText, Circle, CheckCircle, Trash } from 'phosphor-react'
+import { FormEvent, useEffect, useState } from 'react'
+import { PlusCircle, ClipboardText } from 'phosphor-react'
+import { toast, ToastContainer } from 'react-toastify';
 
 import Header from './components/Header'
 
@@ -13,11 +14,54 @@ function App() {
 
   function handleCreateNewTask(event: FormEvent) {
     event.preventDefault()
+    if (newTask.length === 0) {
+      return (
+        <>
+          {toast.warn('O nome da Tarefa não pode ser enviado vazio!', {
+            position: "top-right",
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          })}
+        </>
+      )
+    }
+    if (newTask.length < 3) {
+      return (
+        <>
+          {toast.error('E necessário dar um nome para a Tarefa!', {
+            position: "top-right",
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          })}
+        </>
+      )
+    }
 
-    setTasks([...tasks,  newTask])
+    setTasks([...tasks, newTask])
 
 
     setNewTask('')
+
+    toast.success('Tarefa criada!', {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    })
   }
 
   function onDeleteTask(taskToDelete: string) {
@@ -26,11 +70,47 @@ function App() {
     })
 
     setTasks(taskWithoutDeleteOne)
+    toast.success('Tarefa deletada', {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    })
   }
 
-  function onCheckedTask() {
-    
+  function onCheckedTask(checked: boolean) {
+    if (checked) {
+      setCountChecked(state => state + 1)
+      toast.success(`Tarefa concluída!`, {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      })
+    } else {
+      setCountChecked(state => state - 1)
+      toast.warn(`Ops, essa tarefa não esta mais concluída!`, {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      })
+    }
   }
+
+
 
   return (
     <>
@@ -42,6 +122,7 @@ function App() {
             className={styles.form_search__input}
             type="text"
             placeholder='Adicione uma nova tarefa'
+            required
             value={newTask}
             onChange={(e) => setNewTask(e.target.value)}
           />
@@ -51,7 +132,7 @@ function App() {
         <div className={styles.boxTasks}>
           <header>
             <p>Tarefas criadas <span>{tasks.length}</span></p>
-            <p>Concluídas <span>0</span></p>
+            <p>Concluídas <span>{tasks.length > 0 ? `${countChecked} de ${tasks.length}` : tasks.length}</span></p>
           </header>
 
           <ul className={styles.listTasks}>

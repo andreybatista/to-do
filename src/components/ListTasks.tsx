@@ -6,29 +6,29 @@ import styles from './ListTasks.module.css'
 interface TaskProp {
   task: string
   onDeleteTask: (task: string) => void
-  onCheckedTask: (task: string) => void
+  onCheckedTask: (checked: boolean) => void
 }
 
 
 
 function ListTasks({ task, onDeleteTask, onCheckedTask }: TaskProp) {
-  const [checked, setChecked] = useState(true);
+  const [checked, setChecked] = useState(false);
 
   function handleDeleteTask() {
     onDeleteTask(task);
   }
 
   function handleCheckedTask() {
-    console.log(checked)
-    setChecked(true)
+    onCheckedTask(!checked)
+    setChecked(!checked)
   }
 
   return (
-    <li className={`${styles.task} ${!checked ? styles.taskChecked : ''}`}>
+    <li className={`${styles.task} ${checked ? styles.taskChecked : ''}`}>
       <div>
         <span>
-            <Circle className={styles.trash__iconCircle} size={18} />
-          <CheckCircle className={styles.trash__iconChecked} weight="duotone" size={18} />
+          <Circle onClick={handleCheckedTask} className={styles.trash__iconCircle} size={18} />
+          <CheckCircle onClick={handleCheckedTask} className={styles.trash__iconChecked} weight="duotone" size={18} />
         </span>
         <p>
           {task}
