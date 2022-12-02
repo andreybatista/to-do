@@ -51,6 +51,26 @@ function App() {
       )
     }
 
+
+    const taskVerification = tasks.filter(task => {
+      if (task == newTask) {
+        return toast.error('O nome da Tarefa não pode se repetir!', {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        })
+      }
+    })
+    if(taskVerification.length != 0){
+      setNewTask('')
+      return ''
+    }
+
     setTasks([...tasks, newTask])
 
 
@@ -129,8 +149,6 @@ function App() {
 
 
   useEffect(() => {
-    console.log(tasks.length, countChecked)
-
     if (tasks.length != 0) {
       if (countChecked === tasks.length) {
         setTasksConclusion(true)
