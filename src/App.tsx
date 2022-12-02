@@ -1,6 +1,7 @@
 import { FormEvent, useEffect, useState } from 'react'
 import { PlusCircle, ClipboardText } from 'phosphor-react'
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
+import Confetti from 'react-confetti'
 
 import Header from './components/Header'
 
@@ -11,6 +12,7 @@ function App() {
   const [tasks, setTasks] = useState<string[]>([]);
   const [newTask, setNewTask] = useState('')
   const [countChecked, setCountChecked] = useState(0)
+  const [tasksConclusion, setTasksConclusion] = useState(false)
 
   function handleCreateNewTask(event: FormEvent) {
     event.preventDefault()
@@ -85,6 +87,7 @@ function App() {
   function onCheckedTask(checked: boolean) {
     if (checked) {
       setCountChecked(state => state + 1)
+
       toast.success(`Tarefa concluída!`, {
         position: "top-right",
         autoClose: 1500,
@@ -95,6 +98,7 @@ function App() {
         progress: undefined,
         theme: "colored",
       })
+
     } else {
       setCountChecked(state => state - 1)
       toast.warn(`Ops, essa tarefa não esta mais concluída!`, {
@@ -107,14 +111,37 @@ function App() {
         progress: undefined,
         theme: "colored",
       })
+
     }
   }
 
 
 
+  useEffect(() => {
+    console.log(tasks.length, countChecked)
+
+    if (tasks.length != 0) {
+      if (countChecked === tasks.length) {
+        setTasksConclusion(true)
+      } else {
+        setTasksConclusion(false)
+      }
+    }
+  }, [countChecked])
+
+
   return (
     <>
       <Header />
+      {(tasksConclusion) && (
+        <Confetti
+          width={window.innerWidth}
+          height={window.innerHeight}
+          recycle={false}
+          tweenDuration={10000}
+        />
+      )}
+
 
       <main className={styles.main}>
         <form onSubmit={handleCreateNewTask} className={styles.form_search}>
