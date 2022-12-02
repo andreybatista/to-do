@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from 'react'
+import { ChangeEvent, FormEvent, InvalidEvent, useEffect, useState } from 'react'
 import { PlusCircle, ClipboardText } from 'phosphor-react'
 import { toast } from 'react-toastify';
 import Confetti from 'react-confetti'
@@ -13,6 +13,8 @@ function App() {
   const [newTask, setNewTask] = useState('')
   const [countChecked, setCountChecked] = useState(0)
   const [tasksConclusion, setTasksConclusion] = useState(false)
+
+  const isNewTaskEmpty = newTask.length === 0
 
   function handleCreateNewTask(event: FormEvent) {
     event.preventDefault()
@@ -115,6 +117,15 @@ function App() {
     }
   }
 
+  function handleNewTaskChange(event: ChangeEvent<HTMLInputElement>) {
+    event.target.setCustomValidity('')
+    setNewTask(event.target.value)
+  }
+
+  function handleNewTaskInvalid(event: InvalidEvent<HTMLInputElement>) {
+    event.target.setCustomValidity('Parece que você ainda não comentou')
+  }
+
 
 
   useEffect(() => {
@@ -149,11 +160,12 @@ function App() {
             className={styles.form_search__input}
             type="text"
             placeholder='Adicione uma nova tarefa'
-            required
             value={newTask}
-            onChange={(e) => setNewTask(e.target.value)}
+            onChange={handleNewTaskChange}
+            onInvalid={handleNewTaskInvalid}
+            required
           />
-          <button className={styles.form_search__button} >Criar <PlusCircle className={styles.plusCircle} size={16} /></button>
+          <button className={styles.form_search__button} disabled={isNewTaskEmpty} >Criar <PlusCircle className={styles.plusCircle} size={16} /></button>
         </form>
 
         <div className={styles.boxTasks}>

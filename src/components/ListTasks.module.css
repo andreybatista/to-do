@@ -55,10 +55,27 @@
 
 .trash__iconCircle {
   color: var(--blue-400);
+  cursor: pointer;
+  transition: 0.2s all ease;
+}
+.trash__iconCircle:hover {
+  color: var(--blue-800);
+}
+.trash__iconCircle:hover circle {
+  fill: var(--blue-900);
 }
 
 .trash__iconChecked {
+  transition: 0.2s all ease;
+  cursor: pointer;
   color: var(--purple-800);
+}
+.trash__iconChecked:hover {
+  color: var(--purple-400);
+}
+.trash__iconChecked:hover > circle:nth-child(1),
+.trash__iconChecked:hover > circle:nth-child(2){
+  fill: var(--purple-400);
 }
 
 .trash__iconChecked > circle:nth-child(2) {
@@ -71,9 +88,19 @@
 
 .trash__iconTrash {
   color: var(--gray-300);
+  font-size: 1rem;
 }
 .btn__delete {
   background-color: transparent;
   border: none;
   cursor: pointer;
+  transition: 0.2s all ease;
+  padding: 0.313rem;
+  border-radius: 4px;
+}
+.btn__delete:hover {
+  background: var(--gray-400);
+}
+.btn__delete:hover .trash__iconTrash {
+  color: var(--danger);
 }

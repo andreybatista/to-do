@@ -36,7 +36,7 @@ function ListTasks({ task, onDeleteTask, onCheckedTask }: TaskProp) {
       </div>
 
       <button className={styles.btn__delete} onClick={handleDeleteTask}>
-        <Trash className={styles.trash__iconTrash} size={16} />
+        <Trash className={styles.trash__iconTrash}/>
       </button>
     </li>
   )
