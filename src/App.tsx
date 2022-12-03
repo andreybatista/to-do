@@ -71,7 +71,7 @@ function App() {
       return ''
     }
 
-    setTasks([...tasks, newTask])
+    setTasks(state => [...state, newTask])
 
 
     setNewTask('')
