@@ -84,7 +84,7 @@ function App() {
 
   function onDeleteTask(taskToDelete: string) {
     const taskWithoutDeleteOne = tasks.filter(task => {
-      return task.title != taskToDelete
+      return task.id != taskToDelete
     })
 
     setTasks(taskWithoutDeleteOne)
